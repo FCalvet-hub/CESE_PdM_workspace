@@ -104,23 +104,23 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-    /*Manejo de leds*/
+    /*LEDs manager */
     if (ledTimer == 0)
     {
       sequenceHandler();
-      ledTimer = getLedTime();     //cada 200ms en este caso
+      ledTimer = getLedTime();     //every "getLedTime" [ms]. it is configured by pressing the button
     }
     ledTimer--;
 
-    /*Deteccion de boton*/
+    /*button detection*/
     if (buttonDebounceTimer == 0)
     {
       buttonDetection();
-      buttonDebounceTimer = 20; //casa 20ms en este caso
+      buttonDebounceTimer = 20; //every 20ms
     }
     buttonDebounceTimer--;
 
-    /*Delay de 1 ms para tener control del tiempo*/
+    /*1ms delay timer*/
     HAL_Delay(1);
 
     /* USER CODE BEGIN 3 */
@@ -129,6 +129,7 @@ int main(void)
 }
 
 
+/* Practica_1 CODE BEGIN */
 #define UP 1
 #define DOWN 0
 
@@ -246,6 +247,8 @@ void sequenceHandler(void)
     HAL_GPIO_WritePin(LedOut[i].port, LedOut[i].pin, (seqStep == i ? 1 : 0));
   }
 }
+
+/* Practica_1 CODE END */
 
 /**
  * @brief System Clock Configuration
