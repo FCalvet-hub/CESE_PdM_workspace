@@ -1,0 +1,10 @@
+main.c:70:5:main	3
+main.c:157:6:toggleSequence	1
+main.c:166:6:changeSeqFreq	2
+main.c:180:10:getLedTime	1
+main.c:190:6:buttonDetection	4
+main.c:220:6:sequenceHandler	5
+main.c:254:6:SystemClock_Config	3
+main.c:300:13:MX_USART2_UART_Init	2
+main.c:332:13:MX_GPIO_Init	1
+main.c:372:6:Error_Handler	1
