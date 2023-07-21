@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PdM_Practica_4",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "PdM_Practica_4::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PdM_Practica_4-Debug-7c18b81cdd9bbe981cf9.json",
+					"name" : "PdM_Practica_4",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "G:/Mi unidad/CESE 2023/Programacion de microcontroladores/CESE_PdM_workspace/PdM_Practica_4/build/debug/build",
+		"source" : "G:/Mi unidad/CESE 2023/Programacion de microcontroladores/CESE_PdM_workspace/PdM_Practica_4"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

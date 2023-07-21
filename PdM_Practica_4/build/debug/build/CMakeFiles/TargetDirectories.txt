@@ -1,0 +1,3 @@
+G:/Mi unidad/CESE 2023/Programacion de microcontroladores/CESE_PdM_workspace/PdM_Practica_4/build/debug/build/CMakeFiles/PdM_Practica_4.dir
+G:/Mi unidad/CESE 2023/Programacion de microcontroladores/CESE_PdM_workspace/PdM_Practica_4/build/debug/build/CMakeFiles/edit_cache.dir
+G:/Mi unidad/CESE 2023/Programacion de microcontroladores/CESE_PdM_workspace/PdM_Practica_4/build/debug/build/CMakeFiles/rebuild_cache.dir
