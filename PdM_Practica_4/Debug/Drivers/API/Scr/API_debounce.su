@@ -1,0 +1,6 @@
+../Drivers/API/Scr/API_debounce.c:33:13:Error_Handler	4	static,ignoring_inline_asm
+../Drivers/API/Scr/API_debounce.c:45:13:dummy_function	4	static
+../Drivers/API/Scr/API_debounce.c:52:6:debounceFSM_register_released	16	static
+../Drivers/API/Scr/API_debounce.c:67:6:debounceFSM_register_pressed	16	static
+../Drivers/API/Scr/API_debounce.c:81:6:debounceFSM_init	16	static
+../Drivers/API/Scr/API_debounce.c:101:6:debounceFSM_update	16	static
