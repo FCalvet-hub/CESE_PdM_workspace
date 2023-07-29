@@ -42,7 +42,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define LED_DURATION 200
 
 /* USER CODE END PM */
 
@@ -107,10 +106,6 @@ int main(void)
 		  .released = B1_releaed
   };
 
-  delay_t ledDelay;
-
-
-  delayInit(&ledDelay, LED_DURATION);
   uartInit();
   debounceFSM_init(&B1Debounce);
 

@@ -26,7 +26,6 @@
 #include "API_uart.h"
 #include "API_debounce.h"
 #include "API_delay.h"
-#include <stdint.h>
 
 /* USER CODE END Includes */
 
@@ -42,7 +41,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define LED_DURATION 200
 
 /* USER CODE END PM */
 
@@ -100,19 +98,15 @@ int main(void)
 
   uint8_t strVar[] = "Hola Mundo 2\r\n";
 
-  debounce_t B1Debounce = {
+  debounce_t B1Debounce= {
 		  .pin = B1_Pin,
 		  .port = B1_GPIO_Port,
 		  .pressed = B1_pressed,
 		  .released = B1_releaed
-  };
+  }
 
-  delay_t ledDelay;
-
-
-  delayInit(&ledDelay, LED_DURATION);
   uartInit();
-  debounceFSM_init(&B1Debounce);
+  debounceFSM_init(debounce);
 
 
   /* USER CODE END 2 */
