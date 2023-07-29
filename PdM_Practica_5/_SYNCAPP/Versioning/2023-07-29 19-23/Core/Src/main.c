@@ -26,6 +26,7 @@
 #include "API_uart.h"
 #include "API_debounce.h"
 #include "API_delay.h"
+#include <stdint.h>
 
 /* USER CODE END Includes */
 
@@ -41,6 +42,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define LED_DURATION 200
 
 /* USER CODE END PM */
 
@@ -96,8 +98,6 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t strVar[] = "Hola Mundo 2\r\n";
-
   debounce_t B1Debounce = {
 		  .pin = B1_Pin,
 		  .port = B1_GPIO_Port,
@@ -105,9 +105,12 @@ int main(void)
 		  .released = B1_releaed
   };
 
-  uartInit();
-  debounceFSM_init(debounce_t);
+  delay_t ledDelay;
 
+
+  delayInit(&ledDelay, LED_DURATION);
+  debounceFSM_init(&B1Debounce);
+  uartInit();
 
   /* USER CODE END 2 */
 
@@ -116,8 +119,11 @@ int main(void)
   while (1)
   {
 
+	if(delayRead(&ledDelay)){
+		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	}
 
-
+	debounceFSM_update(&B1Debounce);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -243,11 +249,11 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void B1_pressed(void){
-
+	uartSendString((uint8_t)"Boton oprimido\r\n");
 }
 
 void B1_releaed(void){
-
+	uartSendString(uint8_t"Boton liberado\r\n");
 }
 /* USER CODE END 4 */
 

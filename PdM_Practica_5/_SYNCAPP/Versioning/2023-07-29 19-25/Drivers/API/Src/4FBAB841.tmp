@@ -39,15 +39,15 @@ bool uartInit(void)
 
     // Imprimir la configuración de USART
     char buf[100];
-    snprintf(buf, sizeof(buf), "Configuración de USART:\r\n");
+    snprintf(buf, sizeof(buf), "Configuración de USART:\n");
     HAL_UART_Transmit(&huartApi, (uint8_t *)buf, strlen(buf), UART_TX_TIMEOUT);
-    snprintf(buf, sizeof(buf), "  Velocidad en baudios: %d\r\n", (int)huartApi.Init.BaudRate);
+    snprintf(buf, sizeof(buf), "  Velocidad en baudios: %d\n", (int)huartApi.Init.BaudRate);
     HAL_UART_Transmit(&huartApi, (uint8_t *)buf, strlen(buf), UART_TX_TIMEOUT);
-    snprintf(buf, sizeof(buf), "  Bits de datos: %d\r\n", 8);
+    snprintf(buf, sizeof(buf), "  Bits de datos: %d\n", 8);
     HAL_UART_Transmit(&huartApi, (uint8_t *)buf, strlen(buf), UART_TX_TIMEOUT);
-    snprintf(buf, sizeof(buf), "  Bits de parada: %d\r\n", 1);
+    snprintf(buf, sizeof(buf), "  Bits de parada: %d\n", 1);
     HAL_UART_Transmit(&huartApi, (uint8_t *)buf, strlen(buf), UART_TX_TIMEOUT);
-    snprintf(buf, sizeof(buf), "  Paridad: %d\r\n", 0);
+    snprintf(buf, sizeof(buf), "  Paridad: %d\n", 0);
     HAL_UART_Transmit(&huartApi, (uint8_t *)buf, strlen(buf), UART_TX_TIMEOUT);
     return true;
 }
