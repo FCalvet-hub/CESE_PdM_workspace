@@ -29,6 +29,7 @@
 *.map
 *.m
 *.png
+*.tmp
 
 # Eclipse CDT project files
 # .cproject
