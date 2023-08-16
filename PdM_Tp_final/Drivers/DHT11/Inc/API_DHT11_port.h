@@ -13,70 +13,70 @@
 #include <stdint.h>
 
 /**
- * @brief Estructura que define la configuración del DHT
+ * @brief Structure that defines the DHT configuration
  *
- * @param pin Número del pin del GPIO
- * @param port Puerto del GPIO
- * @param EXTI_IRQn Interrupción del GPIO
- * @param htim Handle del temporizador
+ * @param pin GPIO pin number
+ * @param port GPIO port
+ * @param EXTI_IRQn GPIO interrupt
+ * @param htim Timer handle
  */
 typedef struct
 {
-	uint16_t pin;			 // Número del pin del GPIO
-	GPIO_TypeDef *port;		 // Puerto del GPIO
-	IRQn_Type EXTI_IRQn;	 // Interrupción del GPIO
-	TIM_HandleTypeDef *htim; // Handle del temporizador
+  uint16_t pin;                // GPIO pin number
+  GPIO_TypeDef *port;          // GPIO port
+  IRQn_Type EXTI_IRQn;        // GPIO interrupt
+  TIM_HandleTypeDef *htim;     // Timer handle
 } dhtConf_t;
 
 /**
- * @brief Inicializa el pin del DHT
+ * @brief Initializes the DHT pin
  *
- * @param GPIO_port Puerto del GPIO
- * @param GPIO_Pin Número del pin del GPIO
- * @param PIN_EXTI_IRQn Interrupción del GPIO
- * @param TIMHandle Handle del temporizador
+ * @param GPIO_port GPIO port
+ * @param GPIO_Pin GPIO pin number
+ * @param PIN_EXTI_IRQn GPIO interrupt
+ * @param TIMHandle Timer handle
  */
 void Port_dhtPinInit(GPIO_TypeDef *GPIO_port, uint16_t GPIO_Pin,
-					 IRQn_Type PIN_EXTI_IRQn, TIM_HandleTypeDef *TIMHandle);
+                      IRQn_Type PIN_EXTI_IRQn, TIM_HandleTypeDef *TIMHandle);
 
 /**
- * @brief Configura el pin como salida
+ * @brief Configures the pin as output
  */
 void configPinAsOutput(void);
 
 /**
- * @brief Configura el pin como entrada
+ * @brief Configures the pin as input
  */
 void configPinAsItInput(void);
 
 /**
- * @brief Pone el pin a alto
+ * @brief Sets the pin to high
  */
 void setPin(void);
 
 /**
- * @brief Pone el pin a bajo
+ * @brief Sets the pin to low
  */
 void resetPin(void);
 
 /**
- * @brief Obtiene el valor del temporizador
+ * @brief Gets the value of the timer
  *
- * @return Valor del temporizador
+ * @return Timer value
  */
 uint32_t getTick(void);
 
 /**
- * @brief Setea el valor del contador del temporizador
+ * @brief Sets the value of the timer counter
  *
- * @param count Valor del contador
+ * @param count Counter value
  */
 void setTimerCounter(uint32_t count);
 
 /**
- * @brief Obtiene el valor del contador del temporizador
+ * @brief Gets the value of the timer counter
  *
- * @return Valor del contador
+ * @return Counter value
  */
 uint32_t getTimerCouter(void);
 

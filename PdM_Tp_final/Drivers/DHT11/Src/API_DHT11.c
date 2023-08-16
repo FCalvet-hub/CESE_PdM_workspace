@@ -5,8 +5,8 @@
  *      Author: fcalvet
  */
 
+#include <API_DHT11_port.h>
 #include "API_DHT11.h"
-#include "port.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -18,50 +18,49 @@
 
 typedef union
 {
-	/* Estructura de datos del sensor DHT */
+	/* DHT sensor data structure */
 	struct
 	{
 		uint8_t checksum; // Checksum
-		uint8_t t_dec;	  // Temperatura decimal
-		uint8_t t_int;	  // Temperatura entero
-		uint8_t h_dec;	  // Humedad decimal
-		uint8_t h_int;	  // Humedad entero
+		uint8_t t_dec;	  // Temperature decimal
+		uint8_t t_int;	  // Temperature integer
+		uint8_t h_dec;	  // Humidity decimal
+		uint8_t h_int;	  // Humidity integer
 	};
-	/* Representación de los datos como un número de 64 bits */
+	/* Representation of the data as a 64-bit number */
 	uint64_t raw;
 } dhtDataFormat_t;
 
 typedef enum
 {
-	/* Estados del FSM del DHT */
-	INIT,			 // Inicialización
-	IDLE,			 // Inactivo
-	STARTCOMM_INIT,	 // Inicialización de la comunicación
-	STARTCOMM_DELAY, // Retardo de la comunicación
-	STARTCOMM_END,	 // Fin de la comunicación
-	RX_DATA,		 // Recepción de datos
-	EVAL_DATA		 // Evaluación de datos
+	/* DHT FSM states */
+	INIT,			 // Initialization
+	IDLE,			 // Idle
+	STARTCOMM_INIT,	 // Communication initialization
+	STARTCOMM_DELAY, // Communication delay
+	STARTCOMM_END,	 // Communication end
+	RX_DATA,		 // Data reception
+	EVAL_DATA		 // Data evaluation
 } FSM_states;
 
 static uint8_t state;
 static dhtDataFormat_t dhtStoredData;
 
 volatile dhtDataFormat_t dhtBinData;
-volatile uint8_t contador = 0;
+volatile uint8_t bitCounter = 0;
 
 void dhtInit()
-{	
-
-	/* Configuramos el pin como salida */
+{
+	/* Set the pin as output */
 	configPinAsOutput();
 
-	/* Primer estado de la FSM */
+	/* First FSM state */
 	state = INIT;
 }
 
 void dhtStartComm(void)
 {
-	// Si ya esta corriendo la FSM, no volvemos a inicializar
+	// If the FSM is already running, do not reinitialize
 	if (state == IDLE)
 	{
 		state = STARTCOMM_INIT;
@@ -69,23 +68,23 @@ void dhtStartComm(void)
 }
 
 /**
- * @brief Función para verificar si el checksum de los datos del sensor DHT es correcto.
+ * @brief Function to check if the checksum of the DHT sensor data is correct.
  *
- * @param data Datos del sensor DHT.
+ * @param data DHT sensor data.
  *
- * @return true si el checksum es correcto, false en caso contrario.
+ * @return true if the checksum is correct, false otherwise.
  */
 bool isDhtChecksumOk()
 {
-	uint8_t chsum = 0; // Suma de comprobación
+	uint8_t chsum = 0; // Checksum
 
-	// Calculamos la suma de comprobación de los datos
+	// Calculate the checksum of the data
 	chsum += dhtBinData.t_int;
 	chsum += dhtBinData.t_dec;
 	chsum += dhtBinData.h_int;
 	chsum += dhtBinData.h_dec;
 
-	// Comparamos la suma de comprobación calculada con la suma de comprobación del sensor
+	// Compare the calculated checksum with the sensor's checksum
 	return (dhtBinData.checksum == chsum);
 }
 
@@ -97,9 +96,9 @@ void storeData()
 }
 
 /**
- * @brief Función que implementa el FSM del sensor DHT.
+ * @brief Function that implements the DHT sensor FSM.
  *
- * La función se encarga de controlar el estado del sensor DHT y de realizar las acciones necesarias en cada estado.
+ * The function is responsible for controlling the state of the DHT sensor and performing the necessary actions in each state.
  *
  * @param void
  *
@@ -112,62 +111,63 @@ void dhtFSM_update(void)
 	switch (state)
 	{
 	case INIT:
-		// Configuramos el pin del GPIO como salida y lo ponemos a nivel alto
+		// Set the GPIO pin as output and set it high
 		configPinAsOutput();
 		setPin();
 		state = IDLE;
 		break;
 
 	case IDLE:
-		// Esperando...
+		// Waiting...
 		break;
 
 	case STARTCOMM_INIT:
 		state = STARTCOMM_DELAY;
-		// Reseteamos el contador
-		contador = 0;
-		// Ponemos el pin del GPIO a nivel bajo
+		// Reset the counter
+		bitCounter = 0;
+		// Set the GPIO pin low
 		resetPin();
-		// Almacenamos el tiempo actual
+		// Store the current time
 		last_time = getTick();
 		break;
 
 	case STARTCOMM_DELAY:
-		// Calculamos el tiempo transcurrido desde el último estado
+		// Calculate the elapsed time since the last state
 		countdown = getTick() - last_time;
-		// Si el tiempo transcurrido es mayor que el retardo de inicio de comunicación,
-		// cambiamos al estado STARTCOMM_END
-		if ((countdown) >= DELAY_START_COMM)
+		// If the elapsed time is greater than the communication start delay,
+		// change to the STARTCOMM_END state
+		if (countdown >= DELAY_START_COMM)
 		{
 			setPin();
 			dhtBinData.raw = 0;
 			configPinAsItInput();
-			// Reiniciamos el contador del temporizador
+			// Reset the timer counter
 			setTimerCounter(0);
 			state = STARTCOMM_END;
 		}
 		break;
 
 	case STARTCOMM_END:
-		// Almacenamos el tiempo actual
+		// Store the current time
 		last_time = getTick();
 
 		state = RX_DATA;
 		break;
 
 	case RX_DATA:
-		// Calculamos el tiempo transcurrido desde el último estado
+		// Calculate the elapsed time since the last state
 		countdown = getTick() - last_time;
-		// Si ya recibimos todos los datos o se termino el tiempo para recibirlos
-		if (((countdown) >= TIMEOUT_RX_DATA))
-		{ //|| (contador >= DHT_DATA_BIT_LEN)
+
+		// If we have received all the data or the timeout has expired
+		if (((countdown) >= TIMEOUT_RX_DATA) || (bitCounter >= DHT_DATA_BIT_LEN))
+		{
 			state = EVAL_DATA;
 		}
 		break;
 
 	case EVAL_DATA:
-		// Si el checksum del dato binario es correcto,
-		// almacenamos los datos
+		// If the binary data checksum is correct,
+		// store the data
 		if (isDhtChecksumOk())
 		{
 			storeData();
@@ -191,7 +191,7 @@ dhtTemp_t dhtGetTemp(void)
 {
 	dhtTemp_t temp;
 
-	temp.enteros = dhtStoredData.t_int;
+	temp.integers = dhtStoredData.t_int;
 	temp.decimals = dhtStoredData.t_dec;
 
 	return temp;
@@ -204,22 +204,19 @@ uint8_t dhtGetHum(void)
 
 volatile uint32_t aux = 0;
 /*
- * Función de callback que se invoca cuando se produce una interrupción en el GPIO
+ * Callback function that is invoked when an interrupt occurs on the GPIO
  *
- * Parámetros:
- *   GPIO_Pin: Pin del GPIO que ha generado la interrupción.
+ * Parameters:
+ *   GPIO_Pin: GPIO pin that generated the interrupt.
  */
 void dhtFallingEdgePinISRHandler(void)
-{
-	// Desplazamos el bit mas significativo del dato binario a la izquierda
+{	
 	dhtBinData.raw <<= 1;
 	aux = getTimerCouter();
-	// Si el valor del temporizador es mayor que DHT_TIME_THRESHOLD, el bit más significativo del dato binario se establece a 1,
-	// en caso contrario se establece a 0
+	// If the timer value is greater than the DHT_TIME_THRESHOLD, the most significant bit of the binary data is set to 1,
+	// otherwise it is set to 0
 	dhtBinData.raw |= (getTimerCouter() > DHT_TIME_THRESHOLD) ? 1 : 0;
-
-	// Incrementamos el contador
-	contador++;
-	// Reiniciamos el contador del temporizador
+	
+	bitCounter++;	
 	setTimerCounter(0);
 }

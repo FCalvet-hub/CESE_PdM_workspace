@@ -5,7 +5,7 @@
  *      Author: fert2
  */
 
-#include "port.h"
+#include <API_DHT11_port.h>
 #include "stm32f4xx_ll_tim.h"
 #include "API_DHT11.h"
 #include "main.h"

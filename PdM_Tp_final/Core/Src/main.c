@@ -17,6 +17,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <API_DHT11_port.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -27,7 +28,6 @@
 #include "API_delay.h"
 #include "stm32f4xx_ll_tim.h"
 #include "st7789.h"
-#include "port.h"
 #include "API_uart.h"
 
 /* USER CODE END Includes */
@@ -187,7 +187,7 @@ int main(void)
 		HAL_ADC_Start(&hadc1);
 			higrometerVal = HAL_ADC_GetValue(&hadc1);
 
-			snprintf((char*) auxStr, 5, "%.2u,%u", temperatura.enteros,
+			snprintf((char*) auxStr, 5, "%.2u,%u", temperatura.integers,
 					temperatura.decimals);
 		
 		ST7789_WriteString(28, 40, (char*) auxStr, Font_16x26, YELLOW,
@@ -199,7 +199,7 @@ int main(void)
 			ST7789_WriteString(80, 145, (char*) auxStr, Font_16x26, YELLOW,
 					BLACK);
 			snprintf((char*) uartBuffer, UART_BUFFER_SIZE, "%u.%u,%u,%lu\r\n",
-					temperatura.enteros, temperatura.decimals, humedad,
+					temperatura.integers, temperatura.decimals, humedad,
 					higrometerVal);
 			uartSendString(uartBuffer);
 

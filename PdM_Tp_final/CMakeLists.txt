@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project("PCSE_TP_Final" C CXX ASM)
+project("PdM_Tp_final" C CXX ASM)
 
 include(cmake/st-project.cmake)
 
