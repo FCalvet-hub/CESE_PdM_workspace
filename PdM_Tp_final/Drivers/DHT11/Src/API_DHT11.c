@@ -49,6 +49,19 @@ static dhtDataFormat_t dhtStoredData;
 volatile dhtDataFormat_t dhtBinData;
 volatile uint8_t bitCounter = 0;
 
+
+static void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+
+
 void dhtInit()
 {
 	/* Set the pin as output */
@@ -174,7 +187,7 @@ void dhtFSM_update(void)
 		}
 		else
 		{
-			// ERROR
+			Error_Handler();
 		}
 		storeData();
 

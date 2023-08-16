@@ -12,9 +12,24 @@
 
 static dhtConf_t Dht; // Estructura de configuración del DHT
 
+static void ErrorHandler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+
 void Port_dhtPinInit(GPIO_TypeDef *GPIO_port, uint16_t GPIO_Pin,
 					 IRQn_Type PIN_EXTI_IRQn, TIM_HandleTypeDef *TIMHandle)
 {
+	if(TIMHandle == NULL){
+		ErrorHandler();
+	}
+
 	/* Inicialización de la estructura de configuración del DHT */
 	Dht.port = GPIO_port;
 	Dht.pin = GPIO_Pin;
